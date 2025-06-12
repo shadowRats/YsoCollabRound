@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class Event : MonoBehaviour
 {
-    readonly string line = "Kozupii wants to kill";
+    [SerializeField]
+    string line;
 
     [SerializeField]
-    GameObject diaBox;
+    Transform sprite;
     Text text;
 
     Controls controls;
@@ -20,12 +21,13 @@ public class Event : MonoBehaviour
         if (controls == null)
         {
             controls = FindObjectOfType<Controls>();
-            text = diaBox.GetComponentInChildren<Text>();
+            text = sprite.parent.GetComponentInChildren<Text>();
         }
 
 
         controls.enabled = false;
-        diaBox.SetActive(true);
+        sprite.gameObject.SetActive(true);
+        sprite.parent.gameObject.SetActive(true);
         StartCoroutine(Speak());
     }
 
@@ -35,7 +37,8 @@ public class Event : MonoBehaviour
         {
             spoken = false;
             text.text = "";
-            diaBox.SetActive(false);
+            sprite.gameObject.SetActive(false);
+            sprite.parent.gameObject.SetActive(false);
             controls.enabled = true;
             enabled = false;
         }
