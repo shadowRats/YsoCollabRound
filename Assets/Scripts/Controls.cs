@@ -22,6 +22,11 @@ public class Controls : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         idle = sr.sprite;
 
+
+        if (Screen.height != 1000)
+        {
+            Screen.SetResolution(1000, 1000, false);
+        }
     }
 
     private void OnDisable()
