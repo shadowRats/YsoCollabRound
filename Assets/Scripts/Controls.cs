@@ -11,9 +11,16 @@ public class Controls : Overlapper
     SpriteRenderer sr;
     Sprite idle;
 
+    [SerializeField]
+    Camera cam;
 
-    private void Start()
+    readonly List<Transform> followers = new();
+
+
+    void Start()
     {
+        border = cam.orthographicSize - 0.5f;
+
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         idle = sr.sprite;
@@ -54,6 +61,15 @@ public class Controls : Overlapper
             }
         }
 
+        if (Mathf.Abs(transform.position.x) > border)
+        {
+            transform.position = new Vector3(border * (Mathf.Abs(transform.position.x) / transform.position.x), transform.position.y, 0);
+        }
+        if (Mathf.Abs(transform.position.y) > border)
+        {
+            transform.position = new Vector3(transform.position.x, border * (Mathf.Abs(transform.position.y) / transform.position.y), 0);
+        }
+
         if (none)
         {
             if (animator.enabled)
@@ -63,15 +79,40 @@ public class Controls : Overlapper
             }
         }
 
-        if (on.Count > 0)
+        if (on.Count > 0 && Input.GetKeyDown(KeyCode.Z))
         {
-            if (Input.GetKeyDown(KeyCode.Z))
+            for (int i = 1; i <= on.Count; i++)
             {
-                Event e = on[^1].transform.GetComponent<Event>();
-                if (e != null && !e.enabled)
+                bool b = true;
+
+                foreach (Transform t in followers)
                 {
-                    e.enabled = true;
+                    if (t == on[^i].transform)
+                    {
+                        b = false;
+                        break;
+                    }
                 }
+
+                if (b)
+                {
+                    Event e = on[^i].transform.GetComponent<Event>();
+                    if (e != null)
+                    {
+                        Transform t = transform;
+
+                        if (followers.Count > 0)
+                        {
+                            t = followers[^1];
+                        }
+
+                        StartCoroutine(e.OnCaught(this, t));
+                        followers.Add(on[^i].transform);
+                        break;
+                    }
+
+                }
+
             }
 
         }

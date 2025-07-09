@@ -3,55 +3,61 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Event : MonoBehaviour
+public class Event : Overlapper
 {
     [SerializeField]
     string line;
 
     [SerializeField]
     Transform sprite;
-    Text text;
+    static Text text;
 
-    Controls controls;
+    static Controls controls;
+    Transform leader;
 
-    bool spoken = false;
+    protected override void Update()
+    {
+        base.Update();
 
-    void OnEnable()
+        Vector3 distance = leader.position - transform.position;
+
+        if (distance.magnitude > 0.5)
+        {
+            transform.position += speed * Time.deltaTime * distance;
+        }
+    }
+
+    public IEnumerator OnCaught(Controls co, Transform t)
     {
         if (controls == null)
         {
-            controls = FindObjectOfType<Controls>();
+            controls = co;
             text = sprite.parent.GetComponentInChildren<Text>();
         }
 
+        leader = t;
 
         controls.enabled = false;
         sprite.gameObject.SetActive(true);
         sprite.parent.gameObject.SetActive(true);
-        StartCoroutine(Speak());
-    }
 
-    void Update()
-    {
-        if (spoken && Input.GetKeyDown(KeyCode.Z))
-        {
-            spoken = false;
-            text.text = "";
-            sprite.gameObject.SetActive(false);
-            sprite.parent.gameObject.SetActive(false);
-            controls.enabled = true;
-            enabled = false;
-        }
-    }
-
-    IEnumerator Speak()
-    {
         foreach (char c in line)
         {
             text.text += c;
             yield return new WaitForSeconds(0.05f);
         }
 
-        spoken = true;
+        yield return new WaitUntil(Confirmed);
+
+        text.text = "";
+        sprite.gameObject.SetActive(false);
+        sprite.parent.gameObject.SetActive(false);
+        controls.enabled = true;
+        enabled = true;
+    }
+
+    bool Confirmed()
+    {
+        return Input.GetKeyDown(KeyCode.Z);
     }
 }

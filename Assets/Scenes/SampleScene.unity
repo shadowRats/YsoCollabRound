@@ -135,7 +135,6 @@ GameObject:
   - component: {fileID: 10854937}
   - component: {fileID: 10854940}
   - component: {fileID: 10854942}
-  - component: {fileID: 10854943}
   m_Layer: 0
   m_Name: Untitled_Artwork-2.png
   m_TagString: Overlapper
@@ -248,7 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f397bfb83cd2b94aa27d63bd47e7bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  line: kozupii wants to kill
+  line: kozupii got caught!
   sprite: {fileID: 1092866272}
 --- !u!50 &10854942
 Rigidbody2D:
@@ -271,18 +270,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!114 &10854943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 10854936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab1a9e4097d8121469e14f7dd5b3d3a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &234724989
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,6 +1135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b573dab5bf4365d44ac74caf3a611c7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cam: {fileID: 519420031}
 --- !u!61 &834041340
 BoxCollider2D:
   m_ObjectHideFlags: 0

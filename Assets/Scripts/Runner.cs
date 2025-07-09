@@ -6,7 +6,7 @@ public class Runner : Overlapper
 {
     Vector3 direction;
     float duration, time;
-    readonly float durMin = 1, durMax = 2, dirMin = -5, dirMax = 5, border = 4.5f;
+    readonly float durMin = 1, durMax = 2, dirMin = -5, dirMax = 5;
 
     protected override void Update()
     {

@@ -5,9 +5,10 @@ using UnityEngine;
 public class Overlapper : MonoBehaviour
 {
 
-    protected readonly float speed = 1;
+    protected readonly float speed = 2;
     protected readonly List<Collider2D> on = new();
 
+    protected static float border;
 
     protected virtual void Update()
     {
