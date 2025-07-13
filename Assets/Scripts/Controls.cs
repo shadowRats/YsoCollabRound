@@ -7,9 +7,6 @@ public class Controls : Overlapper
     readonly KeyCode[] movement = { KeyCode.LeftArrow, KeyCode.RightArrow, KeyCode.UpArrow, KeyCode.DownArrow };
     readonly Vector3[] directions = { Vector3.left, Vector3.right, Vector3.up, Vector3.down };
 
-    Animator animator;
-    SpriteRenderer sr;
-    Sprite idle;
 
     [SerializeField]
     Camera cam;
@@ -17,13 +14,13 @@ public class Controls : Overlapper
     readonly List<Transform> followers = new();
 
 
-    void Start()
-    {
-        border = cam.orthographicSize - 0.5f;
+    public static float border;
 
-        animator = GetComponent<Animator>();
-        sr = GetComponent<SpriteRenderer>();
-        idle = sr.sprite;
+    protected override void Awake()
+    {
+        base.Awake();
+
+        border = cam.orthographicSize - 0.5f;
 
         Screen.SetResolution(1000, 1000, false);
 

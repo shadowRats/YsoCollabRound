@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Runner : Overlapper
+public class Runner : Beforer
 {
     Vector3 direction;
     float duration, time;
-    readonly float durMin = 1, durMax = 2, dirMin = -5, dirMax = 5;
+    readonly float durMin = 1, durMax = 2, dirMin = -5, dirMax = 5, speed = 2;
 
-    protected override void Update()
+    void Update()
     {
-        base.Update();
-
-        if (Mathf.Abs(transform.position.x) > border || Mathf.Abs(transform.position.y) > border)
+        if (Mathf.Abs(transform.position.x) > Controls.border || Mathf.Abs(transform.position.y) > Controls.border)
         {
             direction = -direction;
         }

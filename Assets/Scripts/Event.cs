@@ -10,9 +10,9 @@ public class Event : Overlapper
 
     [SerializeField]
     Transform sprite;
+    
     static Text text;
 
-    static Controls controls;
     Transform leader;
 
     protected override void Update()
@@ -23,36 +23,57 @@ public class Event : Overlapper
 
         if (distance.magnitude > 0.5)
         {
+            if (animator != null && !animator.enabled)
+            {
+                animator.enabled = true;
+            }
+
             transform.position += speed * Time.deltaTime * distance;
+        }
+        else if (animator != null && animator.enabled)
+        {
+            animator.enabled = false;
+            sr.sprite = idle;
         }
     }
 
-    public IEnumerator OnCaught(Controls co, Transform t)
+    public IEnumerator OnCaught(Controls controls, Transform t)
     {
-        if (controls == null)
-        {
-            controls = co;
-            text = sprite.parent.GetComponentInChildren<Text>();
-        }
-
         leader = t;
 
-        controls.enabled = false;
-        sprite.gameObject.SetActive(true);
-        sprite.parent.gameObject.SetActive(true);
-
-        foreach (char c in line)
+        if (line != "")
         {
-            text.text += c;
-            yield return new WaitForSeconds(0.05f);
+
+            if (text == null)
+            {
+                text = sprite.parent.GetComponentInChildren<Text>();
+            }
+
+            controls.enabled = false;
+            sprite.gameObject.SetActive(true);
+            sprite.parent.gameObject.SetActive(true);
+
+            foreach (char c in line)
+            {
+                text.text += c;
+                yield return new WaitForSeconds(0.05f);
+            }
+
+            yield return new WaitUntil(Confirmed);
+
+            text.text = "";
+            sprite.gameObject.SetActive(false);
+            sprite.parent.gameObject.SetActive(false);
+            controls.enabled = true;
         }
 
-        yield return new WaitUntil(Confirmed);
+        Beforer b = GetComponent<Beforer>();
 
-        text.text = "";
-        sprite.gameObject.SetActive(false);
-        sprite.parent.gameObject.SetActive(false);
-        controls.enabled = true;
+        if (b != null)
+        {
+            Destroy(b);
+        }
+
         enabled = true;
     }
 

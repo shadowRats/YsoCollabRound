@@ -2,34 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Overlapper : MonoBehaviour
+public class Overlapper : Character
 {
-
-    protected readonly float speed = 2;
     protected readonly List<Collider2D> on = new();
 
-    protected static float border;
+    protected readonly float speed = 2;
 
     protected virtual void Update()
     {
         if (on.Count > 0)
         {
-            if (on[^1].CompareTag("Overlapper"))
+            foreach (Collider2D c in on)
             {
-                if (transform.position.y - transform.lossyScale.y / 2 < on[^1].transform.position.y - on[^1].transform.lossyScale.y / 2)
+                if (c.CompareTag("Overlapper"))
                 {
-                    if (transform.position.z >= on[^1].transform.position.z)
+                    if (transform.position.y < c.transform.position.y)
                     {
-                        transform.position -= Vector3.forward * 0.1f;
+                        if (transform.position.z >= c.transform.position.z)
+                        {
+                            c.transform.position += Vector3.forward * 0.1f;
+
+                            print(gameObject.name + " put " + c.gameObject.name + " behind");
+                        }
+                    }
+                    else
+                    {
+                        if (transform.position.z <= c.transform.position.z)
+                        {
+                            c.transform.position -= Vector3.forward * 0.1f;
+                            print(gameObject.name + " put " + c.gameObject.name + " forward");
+                        }
                     }
                 }
-                else
-                {
-                    if (transform.position.z <= on[^1].transform.position.z)
-                    {
-                        transform.position += Vector3.forward * 0.1f;
-                    }
-                }
+
             }
         }
     }
