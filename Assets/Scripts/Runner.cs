@@ -6,7 +6,7 @@ public class Runner : Beforer
 {
     Vector3 direction;
     float duration, time;
-    readonly float durMin = 1, durMax = 2, dirMin = -5, dirMax = 5, speed = 2;
+    readonly float durMin = 1, durMax = 2, dirMin = -5, dirMax = 5, speed = 2.5f;
 
     void Update()
     {

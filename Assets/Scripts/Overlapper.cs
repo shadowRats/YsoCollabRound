@@ -12,29 +12,57 @@ public class Overlapper : Character
     {
         if (on.Count > 0)
         {
-            foreach (Collider2D c in on)
-            {
-                if (c.CompareTag("Overlapper"))
-                {
-                    if (transform.position.y < c.transform.position.y)
-                    {
-                        if (transform.position.z >= c.transform.position.z)
-                        {
-                            c.transform.position += Vector3.forward * 0.1f;
+            Vector3 pos = transform.position;
+            Vector3 front = Vector3.zero, back = Vector3.zero;
 
-                            print(gameObject.name + " put " + c.gameObject.name + " behind");
-                        }
-                    }
-                    else
+
+            for (int i = 0; i < on.Count; i++)
+            {
+                if (on[i].CompareTag("Overlapper"))
+                {
+                    if (on[i].transform.position.y > pos.y)
                     {
-                        if (transform.position.z <= c.transform.position.z)
+                        if (back == Vector3.zero || on[i].transform.position.y < back.y)
                         {
-                            c.transform.position -= Vector3.forward * 0.1f;
-                            print(gameObject.name + " put " + c.gameObject.name + " forward");
+                            back = on[i].transform.position;
                         }
                     }
+                    else if (on[i].transform.position.y < pos.y)
+                    {
+                        if (front == Vector3.zero || on[i].transform.position.y > front.y)
+                        {
+                            front = on[i].transform.position;
+                        }
+                    }
+
                 }
 
+            }
+
+            Vector3 newPos = pos;
+
+            if (back == Vector3.zero)
+            {
+                if (pos.z <= front.z)
+                {
+                    newPos = new Vector3(pos.x, pos.y, front.z + 0.1f);
+                }
+            }
+            else if (front == Vector3.zero)
+            {
+                if (pos.z >= back.z)
+                {
+                    newPos = new Vector3(pos.x, pos.y, back.z - 0.1f);
+                }
+            }
+            else
+            {
+                newPos = new Vector3(pos.x, pos.y, front.z + (back.z - front.z) / 2);
+            }
+
+            if (pos != newPos)
+            {
+                transform.position = newPos;
             }
         }
     }
