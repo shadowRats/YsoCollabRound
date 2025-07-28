@@ -2,19 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Controls : Overlapper
+public class Controls : Character
 {
     readonly KeyCode[] movement = { KeyCode.LeftArrow, KeyCode.RightArrow, KeyCode.UpArrow, KeyCode.DownArrow };
     readonly Vector3[] directions = { Vector3.left, Vector3.right, Vector3.up, Vector3.down };
-
 
     [SerializeField]
     Camera cam;
 
     readonly List<Transform> followers = new();
 
-
     public static float border;
+    public readonly float speed = 2;
 
     protected override void Awake()
     {
@@ -22,9 +21,9 @@ public class Controls : Overlapper
 
         border = cam.orthographicSize - 0.5f;
 
-        Screen.SetResolution(1000, 1000, false);
+        Screen.SetResolution(1280, 1280, false);
 
-        if (Screen.height < 1000)
+        if (Screen.height < 1280)
         {
             Screen.SetResolution(Screen.height, Screen.height, false);
         }
@@ -60,11 +59,11 @@ public class Controls : Overlapper
 
         if (Mathf.Abs(transform.position.x) > border)
         {
-            transform.position = new Vector3(border * (Mathf.Abs(transform.position.x) / transform.position.x), transform.position.y, 0);
+            //transform.position = new Vector3(border * (Mathf.Abs(transform.position.x) / transform.position.x), transform.position.y, 0);
         }
         if (Mathf.Abs(transform.position.y) > border)
         {
-            transform.position = new Vector3(transform.position.x, border * (Mathf.Abs(transform.position.y) / transform.position.y), 0);
+            //transform.position = new Vector3(transform.position.x, border * (Mathf.Abs(transform.position.y) / transform.position.y), 0);
         }
 
         if (none)

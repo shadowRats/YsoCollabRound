@@ -3,23 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Event : Overlapper
+public class Event : Character
 {
     [SerializeField]
     string line;
 
     [SerializeField]
-    Transform sprite;
+    Transform portrait;
     
     static Text text;
 
     Transform leader;
 
+    Controls controls;
+
     protected override void Update()
     {
         base.Update();
 
-        Vector3 distance = leader.position - transform.position;
+        Vector2 distance = leader.position - transform.position;
 
         if (distance.magnitude > 0.5)
         {
@@ -28,7 +30,7 @@ public class Event : Overlapper
                 animator.enabled = true;
             }
 
-            transform.position += speed * Time.deltaTime * distance;
+            transform.position += controls.speed * Time.deltaTime * new Vector3(distance.x, distance.y, 0);
         }
         else if (animator != null && animator.enabled)
         {
@@ -37,21 +39,23 @@ public class Event : Overlapper
         }
     }
 
-    public IEnumerator OnCaught(Controls controls, Transform t)
+    public IEnumerator OnCaught(Controls co, Transform t)
     {
         leader = t;
+
+        controls = co;
 
         if (line != "")
         {
 
             if (text == null)
             {
-                text = sprite.parent.GetComponentInChildren<Text>();
+                text = portrait.parent.GetComponentInChildren<Text>();
             }
 
             controls.enabled = false;
-            sprite.gameObject.SetActive(true);
-            sprite.parent.gameObject.SetActive(true);
+            portrait.gameObject.SetActive(true);
+            portrait.parent.gameObject.SetActive(true);
 
             foreach (char c in line)
             {
@@ -62,18 +66,12 @@ public class Event : Overlapper
             yield return new WaitUntil(Confirmed);
 
             text.text = "";
-            sprite.gameObject.SetActive(false);
-            sprite.parent.gameObject.SetActive(false);
+            portrait.gameObject.SetActive(false);
+            portrait.parent.gameObject.SetActive(false);
             controls.enabled = true;
         }
 
-        Beforer b = GetComponent<Beforer>();
-
-        if (b != null)
-        {
-            Destroy(b);
-        }
-
+        Destroy(GetComponent<Beforer>());
         enabled = true;
     }
 

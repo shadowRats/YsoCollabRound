@@ -8,8 +8,10 @@ public class Runner : Beforer
     float duration, time;
     readonly float durMin = 1, durMax = 2, dirMin = -5, dirMax = 5, speed = 2.5f;
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         if (Mathf.Abs(transform.position.x) > Controls.border || Mathf.Abs(transform.position.y) > Controls.border)
         {
             direction = -direction;
